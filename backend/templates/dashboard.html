@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Dashboard | NexusPodcast{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-label">Total Podcastshows</div>
+    <div class="stat-value">{{ podcastshow_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Episodes</div>
+    <div class="stat-value" style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;background-clip:text">{{ episode_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Podsubscribers</div>
+    <div class="stat-value" style="background:linear-gradient(135deg,#f59e0b,#f97316);-webkit-background-clip:text;background-clip:text">{{ podsubscriber_count }}</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-label">Total Rating</div>
+    <div class="stat-value" style="background:linear-gradient(135deg,#ef4444,#ec4899);-webkit-background-clip:text;background-clip:text">{{ podcastshow_total_rating|floatformat:0 }}</div>
+  </div>
+</div>
+
+<div class="card">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+    <h3>Recent Podcastshows</h3>
+    <a href="/podcastshows/create/" class="btn btn-primary btn-sm">+ New PodcastShow</a>
+  </div>
+  {% if recent %}
+  <table>
+    <thead>
+      <tr><th>Title</th><th>Host</th><th>Category</th><th>Episodes</th><th>Subscribers</th><th>Created</th></tr>
+    </thead>
+    <tbody>
+      {% for r in recent %}
+      <tr>
+        <td><a href="/podcastshows/{{ r.pk }}/edit/">{{ r.title }}</a></td>
+        <td>{{ r.host|default:"-" }}</td><td><span class="badge badge-blue">{{ r.get_category_display }}</span></td><td>{{ r.episodes|default:"-" }}</td><td>{{ r.subscribers|default:"-" }}</td><td style="color:var(--muted)">{{ r.created_at|date:"M d, Y" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <div class="empty">
+    <p>No records yet.</p>
+    <a href="/podcastshows/create/" class="btn btn-primary" style="margin-top:1rem">Create First PodcastShow</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
