@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}{% if editing %}Edit{% else %}New{% endif %} PodSubscriber | NexusPodcast{% endblock %}
+{% block page_title %}{% if editing %}Edit PodSubscriber{% else %}New PodSubscriber{% endif %}{% endblock %}
+{% block content %}
+<div class="card" style="max-width:750px">
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group">
+        <label>Name</label>
+        <input type="text" name="name" value="{{ record.name|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" name="email" value="{{ record.email|default:'' }}">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Subscribed Shows</label>
+        <input type="text" name="subscribed_shows" value="{{ record.subscribed_shows|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Platform</label>
+        <select name="platform">
+          <option value="apple" {% if record.platform == 'apple' %}selected{% endif %}>Apple</option>
+          <option value="spotify" {% if record.platform == 'spotify' %}selected{% endif %}>Spotify</option>
+          <option value="google" {% if record.platform == 'google' %}selected{% endif %}>Google</option>
+          <option value="rss" {% if record.platform == 'rss' %}selected{% endif %}>RSS</option>
+          <option value="website" {% if record.platform == 'website' %}selected{% endif %}>Website</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Subscribed Date</label>
+        <input type="date" name="subscribed_date" value="{{ record.subscribed_date|date:'Y-m-d'|default:'' }}">
+      </div>
+      <div class="form-group">
+        <label>Status</label>
+        <select name="status">
+          <option value="active" {% if record.status == 'active' %}selected{% endif %}>Active</option>
+          <option value="unsubscribed" {% if record.status == 'unsubscribed' %}selected{% endif %}>Unsubscribed</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Listens</label>
+        <input type="number" name="listens" value="{{ record.listens|default:'0' }}">
+      </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem;margin-top:1rem">
+      <button type="submit" class="btn btn-primary">{% if editing %}Update{% else %}Create{% endif %} PodSubscriber</button>
+      <a href="/podsubscribers/" class="btn" style="background:var(--border);color:var(--text)">Cancel</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
